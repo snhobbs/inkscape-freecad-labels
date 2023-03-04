@@ -104,6 +104,12 @@ def main(fname, outfname, pad_length):
     doc.saveAs(outfname)
 
 
+@click.command()
+@click.option("--fname", "-f", required=True, help="SVG input")
+@click.option("--out", "-o", required=True, help="Output filename")
+@click.option("--length", "-l", default=10, help="Extrusion length")
+def click_main(fname, out, length):
+    main(fname, out, length)
+
 if __name__ == "__main__":
-    svgfname = "/home/simon/top-label-export-path.svg"
-    main(fname=svgfname, outfname="fout.FCStd", pad_length=10)
+    click_main()
