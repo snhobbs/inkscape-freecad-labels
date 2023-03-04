@@ -30,3 +30,16 @@ We now have a collection of a ton of individual objects, one for each individual
 + For non-intersecting paths use the draft->upgrade tool
 + Make each into their own body and extrude
 + Join the objects using a boolean XOR. This will keep the positively extruded parts and subtract the negative extrusion.
+
+
+
+## Process
++ Use OpenSCAD to define the outline
++ Export to SVG and read with inkscape
++ Design Label
++ Run make file which exports the different versions
++ Fix intersection in paths and seperate paths like is
++ Select strokes and turn them into paths
++ Run freecad transformation script
++ Export all the objects to a step file
++ Embed or cut into object
