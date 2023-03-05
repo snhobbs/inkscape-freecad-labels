@@ -46,6 +46,8 @@ If we are doing a label this is a great deal of duplicated effort.
 + Export the parts to a step file
 + Embed or cut into object
 
+
+
 | Inkscape Label Design |
 |---|
 | ![](./top-label.svg) |
@@ -67,6 +69,9 @@ If we are doing a label this is a great deal of duplicated effort.
 
 
 
+### Issues
++ Some letters aren't closed when they're generated (like m). For these go into the sketch and add coincident constraints.
++ Currently intersecting parts are only found using the name exported from inkscape. This is beyond awful and is fragile. If there are many parts this will break. If there are many sections this will break. If inkscape changes path names this will break.
 
 ## Resources
 + <https://wiki.freecad.org/Import_text_and_geometry_from_Inkscape/en>

@@ -37,7 +37,7 @@ def parts_intersect(parta, partb):
 
 
 def is_sub_path(label):
-    return label[-3:-1] == "00"
+    return (len(label)>len("path00000")) and (label[-3:-1] == "00")
 
 
 def get_base_name(label):
@@ -85,6 +85,9 @@ def main(fname, outfname, pad_length):
     sketches = []
     for part in processed_objects:
         sketch = Draft.make_sketch(part, autoconstraints=True)
+        if sketch is None:
+            print(f"Error in part {part} {vars(part)}, failed to make sketch, skipping")
+            continue
         sketches.append(sketch)
         name = f'Body_{sketch.Label}'
         body = doc.addObject('PartDesign::Body', name)
