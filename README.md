@@ -38,8 +38,9 @@ We now have a collection of a ton of individual objects, one for each individual
 + Export to SVG and read with inkscape
 + Design Label
 + Run make file which exports the different versions
-+ Fix intersection in paths and seperate paths like is
-+ Select strokes and turn them into paths
++ Fix intersection in paths (select intersecting parts -> union) and seperate paths like is (ctrl-a + "split paths" works)
++ Select strokes and turn them into paths (ctrl+a + "stroke to path")
 + Run freecad transformation script
-+ Export all the objects to a step file
++ Open the freecad document and export the part group to a step file. If the paths are connected in a single step body the cut fails; they must be grouped as parts.
++ Export the parts to a step file
 + Embed or cut into object

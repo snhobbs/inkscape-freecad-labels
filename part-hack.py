@@ -14,6 +14,8 @@ First add the location of FreeCAD.so to the PYTHONPATH: PYTHONPATH=${PYTHONPATH}
 + To use the parts export all as a step file
 + to use as an extrusion set the depth to the desired level and use the embed tool in freecad
 + to use as an indent set some large pad length, place at the desired depth, and use the Part->cut tool
+
++ NOTE during export if the bodies in the part are not visible it will raise "<Import> ImportOCAF2.cpp(1159): fout_top#Part has null shape". Toggle their visibility and it will fix this
 '''
 
 
@@ -21,6 +23,8 @@ import click
 import FreeCAD
 import BOPTools.SplitFeatures
 import Draft
+import Part
+import os
 
 
 def parts_intersect(parta, partb):
@@ -93,15 +97,20 @@ def main(fname, outfname, pad_length):
         pad = body.newObject('PartDesign::Pad', pad_name)
         # pad = doc.getObject(pad_name)
         pad.Profile = sketch
-        pad.Length=pad_length
-        doc.recompute()
+        pad.Length = pad_length
+    doc.recompute()
+
+    #j = BOPTools.SplitFeatures.makeXOR(name='XOR')
+    #j.Objects = parts
+    #j.Proxy.execute(j)
 
 
-    j = BOPTools.SplitFeatures.makeXOR(name='XOR')
-    j.Objects = parts
-    j.Proxy.execute(j)
+    base, ext = os.path.splitext(outfname)
+    grouped_parts = doc.addObject('App::Part','Part')
+    grouped_parts.addObjects(parts)
 
     doc.saveAs(outfname)
+    #Part.export(grouped_parts, f"{base}.step")
 
 
 @click.command()
@@ -110,6 +119,7 @@ def main(fname, outfname, pad_length):
 @click.option("--length", "-l", default=10, help="Extrusion length")
 def click_main(fname, out, length):
     main(fname, out, length)
+
 
 if __name__ == "__main__":
     click_main()
