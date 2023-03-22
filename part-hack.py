@@ -36,14 +36,21 @@ def parts_intersect(parta, partb):
   return parta.Label in partb.Label or partb.Label in parta.Label
 
 
-def is_sub_path(label):
-    return (len(label)>len("path00000")) and (label[-3:-1] == "00")
+#def is_sub_path(label):
+#    return (len(label)>len("path00000")) and (label[-3:-1] == "00")
 
 
-def get_base_name(label):
-    if is_sub_path(label):
-        return label[:-3]
-    return label
+def get_base_name(label, base_names):
+    end = -1
+    # drop a character each time through trying to find the name
+    if label in base_names:
+        return label
+
+    while label[:end] not in base_names:
+        end-=1
+        if abs(end) > len(label):
+            raise ValueError(f"Label {label} not found in base_names {base_names}")
+    return label[:end]
 
 
 def main(fname, outfname, pad_length):
@@ -57,8 +64,17 @@ def main(fname, outfname, pad_length):
 
     base_parts = dict()
 
+    # Sort all parts so subpaths come after primary
+    part_names = sorted([pt.Label for pt in doc.Objects])
+    base_names = []
+    for name in part_names:
+        # hopefully we have less than 999 parts per path group
+        if name[:-3] not in base_names:
+            base_names.append(name)
+
+
     for path in doc.Objects:
-        base = get_base_name(path.Label)
+        base = get_base_name(path.Label, base_names)
         if base not in base_parts:
             base_parts[base] = []
         base_parts[base].append(path)
